@@ -3,7 +3,6 @@ from src.main import app
 
 client = TestClient(app)
 
-# Существующие пользователи
 users = [
     {
         'id': 1,
@@ -38,7 +37,7 @@ def test_create_user_with_valid_email():
     assert response.status_code == 201
     user_id = response.json()
     assert isinstance(user_id, int), f"Expected int, got {type(user_id)}"
-    assert user_id > 0  # Проверяем что ID валидный
+    assert user_id > 0  
 
 def test_create_user_with_invalid_email():
     '''Создание пользователя с почтой, которую использует другой пользователь'''
@@ -49,11 +48,11 @@ def test_create_user_with_invalid_email():
     response = client.post("/api/v1/user", json=user)
     assert response.status_code == 409  
     response_json = response.json()
-    assert isinstance(response_json, dict)  # Проверяем, что ответ - словарь
-    assert response_json['detail'] == 'User with this email already exists'  # Сообщение об ошибке
+    assert isinstance(response_json, dict)  
+    assert response_json['detail'] == 'User with this email already exists'  
 
 def test_delete_user():
     '''Удаление пользователя'''
     user_to_delete = users[0] 
     response = client.delete(f"/api/v1/user?email={user_to_delete['email']}")
-    assert response.status_code == 204  # Успешное удаление без контента
+    assert response.status_code == 204  
